@@ -1,0 +1,35 @@
+# For full reference for Mesh Definition visit: https://www.streamx.dev/guides/streamx-mesh-yaml-reference.html
+
+# Change Me
+defaultRegistry: ghcr.io/streamx-dev/streamx-project-template
+defaultImageTag: latest-jvm
+
+# Sources defines channels that ingestors are allowed to ingest. For more visit: https://www.streamx.dev/guides/streamx-mesh-yaml-reference.html#sources
+sources:
+  cli:
+    outgoing:
+      - "products"
+
+ingestion:
+  rest-ingestion:
+    environment:
+      # This property disables security for Ingestion
+      QUARKUS_HTTP_AUTH_PERMISSION_BEARER_POLICY: "permit"
+
+processing:
+  relay:
+    image: relay-processing-service
+    incoming:
+      products:
+        topic: inboxes/products
+    outgoing:
+      relayed-products:
+        topic: outboxes/products
+
+delivery:
+  graphql:
+    image: graphql-delivery-service
+    incoming:
+      products:
+        topic: outboxes/products
+    port: 8084
