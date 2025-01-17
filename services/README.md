@@ -2,4 +2,8 @@
 
 This is the place containing sample services implementing sample business logic.
 
-[//]: # (TODO describe `data-model`, relay and graphql services)
+The current example project contains the following Maven modules:
+* [data-model](./data-model/README.md) - contains the model that is shared across all services.
+* [relay-processing-service](./relay-processing-service/README.md) - relays messages from one channel to another. 
+It's especially useful for providing delivery service ingested messages.
+* [graphql-delivery-service](./graphql-delivery-service/README.md) - allows querying of ingested products.

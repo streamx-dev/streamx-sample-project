@@ -4,12 +4,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.example</groupId>
-    <artifactId>example-services</artifactId>
+    <groupId>org.example</groupId> <!-- Change Me -->
+    <artifactId>example-services</artifactId> <!-- Change Me -->
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
   <artifactId>graphql-delivery-service</artifactId>
+  <name>Example : GraphQL Delivery Service</name> <!-- Change Me -->
 
   <dependencies>
     <dependency>

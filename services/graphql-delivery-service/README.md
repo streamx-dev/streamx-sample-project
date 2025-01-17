@@ -1,58 +1,41 @@
 # GraphQL Delivery Service
 
-This project contains example StreamX services implementations dedicated to be a showcase of how to develop services.
-These services can be used to create example StreamX mesh.
+This project is sample implementation of Delivery Service, which exposes GraphQL API of provided `products`.
 
-## Prerequisites
+It exposes the following endpoints:
+* [/q/graphql-ui/](http://localhost:8084/q/graphql-ui/) - sample GraphQL console
+* [/graphql](http://localhost:8084/graphql) - endpoint allowing making request to GraphQL
+* [/graphql/schema.graphql](http://localhost:8084/graphql/schema.graphql) - endpoint exposing the complete schema of the GraphQL API
 
-To work with this repository you need:
-* OpenJDK 17+ installed with JAVA_HOME configured appropriately
-* Docker
-* StreamX CLI
-
-### StreamX CLI
-
-To install StreamX CLI execute:
-```sh
-# for Linux/MacOS
-brew install streamx-dev/tap/streamx
+## Supported GraphQL Queries:
+* allProducts - returns `product` by specified `key`
+```graphql
+query {
+    allProducts {
+        name
+        description
+        imageUrl
+    }
+}
 ```
-or
-```shell
-# for Windows
-scoop bucket add streamx-dev https://github.com/streamx-dev/scoop-streamx-dev.git
-scoop install streamx
-```
-
-For more information visit [StreamX CLI Reference](https://www.streamx.dev/guides/streamx-command-line-interface-reference.html).
-
-## Packaging
-
-To build StreamX Project run:
-```shell
-# For Linux/MacOS
-./mvnw clean install
-```
-or 
-```shell
-# For Windows
-mvnw.cmd clean install
+* getProduct - returns `product` by specified `key`
+```graphql
+query {
+    getProduct(key:"spray-bottle") {
+        name
+        description
+        imageUrl
+    }
+}
 ```
 
-This command build both Maven Artefacts and Docker Image required for starting local StreamX Mesh.
+### Channels
 
-## Running local StreamX Mesh
+Incoming channels:
+- `products` 
 
-To start local instance of Mesh run:
+### Example environment variables config
 
-```shell
-streamx run
 ```
-The command above runs the StreamX Mesh defined in the `mesh.yaml` file located in current directory.
-
-Optionally run script to trigger example publications and see results:
-
-```bash
-sh scripts/publish-all.sh
+MP_MESSAGING_INCOMING_PRODUCTS_TOPIC: "persistent://streamx/outboxes/products"
 ```
-

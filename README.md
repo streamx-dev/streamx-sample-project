@@ -7,14 +7,14 @@ Please note that these services are not production-ready!
 
 ## Project structure
 
-Each StreamX project should be organized in a specific way and should follow the conventions below .
+Each StreamX project should be organized in a specific way and should follow the conventions described below.
 
 The following are recommended directories:
 
 [//]: # (* TODO `configs`)
 [//]: # (* TODO `secrets`)
-* [`scripts`](./scripts/README.md) - all useful scripts and resources should be placed here
-* [`services`](./services/README.md) - your StreamX Processing and Delivery Services (as well as other Maven modules) should be placed here
+* [scripts](./scripts/README.md) - all useful scripts and resources should be placed here
+* [services](./services/README.md) - your StreamX Processing and Delivery Services (as well as other Maven modules) should be placed here
 
 
 [//]: # (* TODO `mesh.yaml`)
