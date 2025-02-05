@@ -25,6 +25,14 @@ processing:
     outgoing:
       relayed-products:
         topic: outboxes/products
+  template:
+    image: template-processing-service
+    incoming:
+      products:
+        topic: inboxes/products
+    outgoing:
+      pages:
+        topic: outboxes/pages
 
 delivery:
   graphql:

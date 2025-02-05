@@ -19,7 +19,7 @@ The following are recommended directories:
 
 [//]: # (* TODO `mesh.yaml`)
 [//]: # (* TODO `pom.xml`)
-[//]: # (* TODO `pom.xml`)
+[//]: # (* TODO `deployment.yaml`)
 
 ## Prerequisites
 
