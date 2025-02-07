@@ -5,7 +5,7 @@
     <title>Products</title>
     <meta name="description"
           content="This example presents how to change static html files located on your local into pages available via StreamX">
-    <link href="/application/css/output.css" rel="stylesheet">
+    <link href="/static/css/output.css" rel="stylesheet">
   </head>
   <body class="m-0 flex flex-col min-h-screen">
     <header>
@@ -26,13 +26,12 @@
       </nav>
     </header>
     <main class="flex-1">
-
       <div class="bg-white">
         <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
           <h2 class="text-2xl font-bold tracking-tight text-gray-900">Products</h2>
           <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+            ${foreach $products as $product}
             <div class="group relative">
-              ${foreach $products as $product}
               <div
                   class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                 <img src="${product.imageUrl}" alt="${product.name}"
@@ -48,8 +47,8 @@
                   </h3>
                 </div>
               </div>
-              ${/foreach}
             </div>
+            ${/foreach}
           </div>
         </div>
       </div>

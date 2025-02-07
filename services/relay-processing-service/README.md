@@ -2,7 +2,9 @@
 
 Relay messages between corresponding incoming and outgoing channel.
 
-## Channels
+## Configuration
+### Channels
+
 Incoming channels:
 - `products`
 

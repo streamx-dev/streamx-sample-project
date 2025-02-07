@@ -41,3 +41,9 @@ delivery:
       products:
         topic: outboxes/products
     port: 8084
+  web:
+    image: web-delivery-service
+    incoming:
+      pages:
+        topic: outboxes/pages
+    port: 8081

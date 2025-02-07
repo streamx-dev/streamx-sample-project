@@ -77,3 +77,6 @@ Optionally run script to trigger sample publications and see results:
 sh scripts/publish-all.sh
 ```
 
+To see results of publication - visit:
+* [Generated pages](http://localhost:8081/products.html) 
+* [GraphQL Console](http://localhost:8084/q/graphql-ui/) and launch some queries (details in [GraphqlDeliveryService](./services/graphql-delivery-service/README.md))

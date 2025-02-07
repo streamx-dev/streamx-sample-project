@@ -7,7 +7,9 @@ Fills predefined templates with product data. As a result it produces two pages:
 This sample service contains usage of `Store` in [ListingCreator](./src/main/java/com/example/project/template/ListingCreator.java). 
 Mocking `Store` is implemented in [ListingCreatorTest](./src/test/java/com/example/project/template/ListingCreatorTest.java).
 
-## Channels
+## Configuration
+### Channels
+
 Incoming channels:
 - `products`
 

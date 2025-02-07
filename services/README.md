@@ -8,3 +8,4 @@ The current example project contains the following Maven modules:
 It's especially useful for providing delivery service ingested messages.
 * [template-processing-service](./template-processing-service/README.md) - fills predefined templates with product information.
 * [graphql-delivery-service](./graphql-delivery-service/README.md) - allows querying of ingested products.
+* [web-delivery-service](./web-delivery-service/README.md) - exposes produced pages and predefined resources.

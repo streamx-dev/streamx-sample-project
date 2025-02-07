@@ -92,13 +92,13 @@ unpublish() {
 
 publish "spray-bottle" "Spray bottle" \
 "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vitae elit eget purus venenatis feugiat eget eget lorem. Donec eu egestas felis, vel viverra urna. Proin pellentesque porta quam, at commodo metus suscipit vel. Cras rhoncus, arcu non dapibus feugiat, felis odio laoreet nunc, in sagittis justo quam quis augue. Nullam tincidunt ante id cursus suscipit. Mauris tortor ipsum, dapibus in condimentum ac, consequat at quam. Nunc nec tristique tortor. Etiam euismod tristique lacus, a sollicitudin odio auctor rhoncus. In blandit ullamcorper eros, in ultricies enim ultrices at." \
-"https://github.com/streamx-dev/streamx-project-template/raw/refs/heads/main/assets/product-1.webp"
+"/static/images/product-1.webp"
 publish "glossy-plastic-bottle" "Glossy Plastic bottle mockup" \
 "Nullam vitae eleifend lectus. Cras dignissim ligula velit, non cursus nibh elementum at. Suspendisse sollicitudin non sem in cursus. Quisque nec efficitur risus. Suspendisse ut ante augue. Cras non eleifend nisl. Cras ut lorem dui. Sed vitae erat ligula. Duis ut diam nec dolor scelerisque pretium non eu mi. Suspendisse potenti. Mauris convallis erat rutrum nulla fermentum egestas. Fusce mollis sit amet purus ut commodo. Etiam varius ornare laoreet." \
-"https://github.com/streamx-dev/streamx-project-template/raw/refs/heads/main/assets/product-2.webp"
+"/static/images/product-2.webp"
 publish "large-spray-can" "Large Spray can mockup" \
 "Pellentesque fermentum a elit placerat porttitor. Morbi molestie dolor et quam tempor, nec suscipit neque hendrerit. Nullam dictum est at ex ornare commodo. Donec convallis ex ligula, in eleifend diam sollicitudin et. Donec porttitor enim bibendum risus rhoncus pellentesque. Mauris a vehicula velit, quis consectetur dolor. Proin porta ac risus in suscipit. Suspendisse nisl nunc, semper ut dapibus eu, congue eu arcu. Nulla facilisi. Donec quis libero vitae metus tristique porttitor quis vitae eros. Nulla feugiat nibh in condimentum venenatis. Aenean mi quam, tempus ac luctus nec, lobortis vel nulla. Ut ultricies mattis turpis, eu blandit nibh imperdiet quis." \
-"https://github.com/streamx-dev/streamx-project-template/raw/refs/heads/main/assets/product-3.webp"
+"/static/images/product-3.webp"
 
 # Unpublishing (initially disabled)
 

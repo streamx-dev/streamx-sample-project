@@ -29,6 +29,7 @@ query {
 }
 ```
 
+## Configuration
 ### Channels
 
 Incoming channels:
