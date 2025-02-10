@@ -25,6 +25,14 @@ processing:
     outgoing:
       relayed-products:
         topic: outboxes/products
+  json-converter:
+    image: json-converter-processing-service
+    incoming:
+      products:
+        topic: inboxes/products
+    outgoing:
+      jsons:
+        topic: outboxes/json
   template:
     image: template-processing-service
     incoming:
@@ -46,4 +54,6 @@ delivery:
     incoming:
       pages:
         topic: outboxes/pages
+      jsons:
+        topic: outboxes/json
     port: 8081

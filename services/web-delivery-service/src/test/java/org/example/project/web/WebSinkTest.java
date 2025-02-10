@@ -2,6 +2,7 @@ package org.example.project.web;
 
 import static io.restassured.RestAssured.given;
 import static org.awaitility.Awaitility.await;
+import static org.example.project.web.WebSink.CHANNEL_JSONS;
 import static org.example.project.web.WebSink.CHANNEL_PAGES;
 import static org.hamcrest.core.StringContains.containsString;
 
@@ -17,6 +18,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import org.eclipse.microprofile.reactive.messaging.Message;
 import org.eclipse.microprofile.reactive.messaging.Metadata;
+import org.example.project.model.Json;
 import org.example.project.model.Page;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -59,6 +61,34 @@ class WebSinkTest {
 
     // when
     unpublish(key, CHANNEL_PAGES);
+
+    // then
+    await().until(() -> cannotAccessViaHttp(key));
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {
+      "product.json"
+  })
+  void shouldAccessPublishedJson(String key) {
+    // when
+    String publishedContent = publish(key, CHANNEL_JSONS, Json::new);
+
+    // then
+    await().until(() -> canAccessViaHttp(key, publishedContent));
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {
+      "unpublishedTest.json"
+  })
+  void shouldNotAccessUnpublishedJson(String key) {
+    // given
+    String publishedContent = publish(key, CHANNEL_JSONS, Json::new);
+    await().until(() -> canAccessViaHttp(key, publishedContent));
+
+    // when
+    unpublish(key, CHANNEL_JSONS);
 
     // then
     await().until(() -> cannotAccessViaHttp(key));

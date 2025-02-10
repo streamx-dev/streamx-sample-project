@@ -15,6 +15,7 @@
   <modules>
     <module>data-model</module>
     <module>relay-processing-service</module>
+    <module>json-converter-processing-service</module>
     <module>template-processing-service</module>
     <module>graphql-delivery-service</module>
     <module>web-delivery-service</module>
