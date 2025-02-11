@@ -12,9 +12,9 @@ sources:
 
 ingestion:
   rest-ingestion:
-    environment:
-      # This property disables security for Ingestion
-      QUARKUS_HTTP_AUTH_PERMISSION_BEARER_POLICY: "permit"
+    environmentFrom:
+      configs:
+        - "ingestion.properties"
 
 processing:
   relay:
