@@ -48,6 +48,7 @@ public class InMemoryProductRepository {
   }
 
   public record Product(
+      String key,
       String name,
       String description,
       String imageUrl) { }

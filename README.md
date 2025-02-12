@@ -15,9 +15,6 @@ The following are recommended directories:
 * [scripts](./scripts/README.md) - all useful scripts and resources should be placed here
 * [services](./services/README.md) - your StreamX Processing and Delivery Services (as well as other Maven modules) should be placed here
 
-
-[//]: # (* TODO `pom.xml`)
-
 ## Prerequisites
 
 To work with this repository you need:
@@ -61,7 +58,8 @@ This command builds both the Maven artefacts and the Docker images needed to sta
 To start local instance of Mesh run:
 
 ```shell
-streamx run -f mesh/mesh.yaml
+cd mesh
+streamx run
 ```
 The above command runs the StreamX mesh defined in the `mesh.yaml` file located in the current directory.
 For more information, visit [StreamX CLI Reference](https://www.streamx.dev/guides/streamx-command-line-interface-reference.html#_streamx_run).

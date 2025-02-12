@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 @QuarkusTest
 class GraphQLSinkTest {
 
+  public static final String KEY = "key";
   public static final String NAME = "name";
   public static final String DESCRIPTION = "description";
   public static final String IMAGE_URL = "imageUrl";
@@ -33,6 +34,7 @@ class GraphQLSinkTest {
         "query": "\
            query { \
              allProducts { \
+               key \
                name \
                description \
                imageUrl \
@@ -45,6 +47,7 @@ class GraphQLSinkTest {
         "query": "\
            query { \
              getProduct(key:\\"%s\\") {\
+               key \
                name \
                description \
                imageUrl \
@@ -75,7 +78,7 @@ class GraphQLSinkTest {
     Product data = new Product(NAME, DESCRIPTION, IMAGE_URL);
 
     // when
-    publish("key", data);
+    publish(KEY, data);
     await().until(() -> !productRepository.getAllProducts().isEmpty());
 
     // then
@@ -86,8 +89,8 @@ class GraphQLSinkTest {
 
     assertThat(allProducts)
         .isNotEmpty()
-        .extracting(GraphQLProduct::name, GraphQLProduct::description, GraphQLProduct::imageUrl)
-        .contains(Tuple.tuple(NAME, DESCRIPTION, IMAGE_URL));
+        .extracting(GraphQLProduct::key, GraphQLProduct::name, GraphQLProduct::description, GraphQLProduct::imageUrl)
+        .contains(Tuple.tuple(KEY, NAME, DESCRIPTION, IMAGE_URL));
   }
 
   @Test
@@ -108,8 +111,8 @@ class GraphQLSinkTest {
 
     assertThat(product)
         .isNotNull()
-        .extracting(GraphQLProduct::name, GraphQLProduct::description, GraphQLProduct::imageUrl)
-        .contains(NAME, DESCRIPTION, IMAGE_URL);
+        .extracting(GraphQLProduct::key, GraphQLProduct::name, GraphQLProduct::description, GraphQLProduct::imageUrl)
+        .contains(specificKey, NAME, DESCRIPTION, IMAGE_URL);
   }
 
   @Test
@@ -164,6 +167,6 @@ class GraphQLSinkTest {
     return response;
   }
 
-  record GraphQLProduct(String name, String description, String imageUrl) { }
+  record GraphQLProduct(String key, String name, String description, String imageUrl) { }
 
 }

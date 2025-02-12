@@ -40,7 +40,7 @@ public class GraphQLSink {
 
   private void updateStorage(Product product, String key, Action action) {
     if (Action.PUBLISH.equals(action)) {
-      InMemoryProductRepository.Product graphQLProduct = mapProduct(product);
+      InMemoryProductRepository.Product graphQLProduct = mapProduct(key, product);
 
       productRepository.putProduct(key, graphQLProduct);
     } else if (Action.UNPUBLISH.equals(action)) {
@@ -50,8 +50,9 @@ public class GraphQLSink {
     }
   }
 
-  private static InMemoryProductRepository.Product mapProduct(Product product) {
+  private static InMemoryProductRepository.Product mapProduct(String key, Product product) {
     return new InMemoryProductRepository.Product(
+        key,
         product.getName(),
         product.getDescription(),
         product.getImageUrl()

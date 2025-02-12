@@ -6,6 +6,7 @@
     <meta name="description"
           content="This example presents how to change static html files located on your local into pages available via StreamX">
     <link href="/static/css/output.css" rel="stylesheet">
+    <script src="/static/js/page.js"></script>
   </head>
   <body class="m-0 flex flex-col min-h-screen">
     <header>
@@ -53,6 +54,19 @@
               <p></p>
             </div>
           </div>
+          <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
+            <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+              <a href="/jsons/${product.key}.json">/jsons/${product.key}.json</a></h1></h1>
+          </div>
+          <code class="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
+            <div class="space-y-6">
+              <pre style="text-align: left; overflow: overlay;" id="productJson">Will be fetched from a static file.</pre>
+              <script>
+                setTimeout(() => fetchJson('/jsons/${product.key}.json'), 1000)
+              </script>
+              <p></p>
+            </div>
+          </code>
         </div>
       </div>
     </main>
