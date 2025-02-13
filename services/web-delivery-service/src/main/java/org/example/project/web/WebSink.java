@@ -24,7 +24,7 @@ public class WebSink {
   Logger log;
 
   // Store is needed to filter out outdated versions.
-  // As productsStore remains unused, we can store only data required for filtering (EventTime).
+  // As Store remains unused, we can store only data required for filtering (EventTime).
   // Long type stands for EventTime extracted by EventTimeMessageConverter
   @FromChannel(CHANNEL_PAGES)
   Store<Long> pageEventTimeByKey;

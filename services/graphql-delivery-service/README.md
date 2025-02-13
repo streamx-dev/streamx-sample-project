@@ -12,6 +12,7 @@ It exposes the following endpoints:
 ```graphql
 query {
     allProducts {
+        key
         name
         description
         imageUrl
@@ -22,6 +23,7 @@ query {
 ```graphql
 query {
     getProduct(key:"spray-bottle") {
+        key
         name
         description
         imageUrl

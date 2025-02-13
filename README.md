@@ -75,3 +75,39 @@ sh scripts/publish-all.sh
 To see results of publication - visit:
 * [Generated pages](http://localhost:8081/products.html) 
 * [GraphQL Console](http://localhost:8084/q/graphql-ui/) and launch some queries (details in [GraphqlDeliveryService](./services/graphql-delivery-service/README.md))
+
+## Debugging
+
+If you need to debug a single service as part of the StreamX Mesh, you need to comment out debugged service in your mesh YAML  
+e.g. to debug `graphql-delivery-service` comment out such fragment as below:
+
+```yaml
+delivery:
+#  graphql:
+#    image: graphql-delivery-service
+#    incoming:
+#      products:
+#        topic: outboxes/products
+#    port: 8084
+  web:
+    image: web-delivery-service
+    incoming:
+      pages:
+        topic: outboxes/pages
+      jsons:
+        topic: outboxes/jsons
+    port: 8081
+```
+
+Then, run your mesh using standard `streamx run` command:
+```shell
+cd mesh
+streamx run
+```
+
+Finally make sure that the `application-streamx-mesh-dev.properties` file in the debugged service reflects the mesh configuration (topics configuration, exposed port, etc.). 
+Then run the debugged service with the `streamx-mesh-dev` profile, e.g. for `graphql-delivery-service` run the following command: 
+```shell
+cd services/graphql-delivery-service
+quarkus dev -Dquarkus.profile=streamx-mesh-dev
+```

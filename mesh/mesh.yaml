@@ -32,7 +32,7 @@ processing:
         topic: inboxes/products
     outgoing:
       jsons:
-        topic: outboxes/json
+        topic: outboxes/jsons
   template:
     image: template-processing-service
     incoming:
@@ -55,5 +55,5 @@ delivery:
       pages:
         topic: outboxes/pages
       jsons:
-        topic: outboxes/json
+        topic: outboxes/jsons
     port: 8081
