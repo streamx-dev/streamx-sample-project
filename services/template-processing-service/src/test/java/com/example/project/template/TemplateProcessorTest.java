@@ -122,7 +122,6 @@ class TemplateProcessorTest {
             - Name: otherName
             - ImageUrl: otherImageUrl
             - Description: otherDescription
-
         """);
     sink.clear();
   }

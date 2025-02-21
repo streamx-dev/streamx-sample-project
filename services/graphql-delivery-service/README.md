@@ -7,6 +7,8 @@ It exposes the following endpoints:
 * [/graphql](http://localhost:8084/graphql) - endpoint allowing making request to GraphQL
 * [/graphql/schema.graphql](http://localhost:8084/graphql/schema.graphql) - endpoint exposing the complete schema of the GraphQL API
 
+To read Delivery Service reference visit https://www.streamx.dev/guides/delivery-service-reference.html.
+
 ## Supported GraphQL Queries:
 * allProducts - returns `product` by specified `key`
 ```graphql
@@ -36,9 +38,3 @@ query {
 
 Incoming channels:
 - `products` 
-
-### Example environment variables config
-
-```
-MP_MESSAGING_INCOMING_PRODUCTS_TOPIC: "persistent://streamx/outboxes/products"
-```

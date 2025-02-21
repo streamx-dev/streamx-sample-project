@@ -11,7 +11,6 @@ import dev.streamx.quasar.reactive.messaging.metadata.Action;
 import dev.streamx.quasar.reactive.messaging.metadata.EventTime;
 import dev.streamx.quasar.reactive.messaging.metadata.Key;
 import io.quarkus.arc.ClientProxy;
-import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.smallrye.reactive.messaging.GenericPayload;
 import jakarta.inject.Inject;
@@ -32,17 +31,6 @@ import org.mockito.Mockito;
 // @TestInstance allows us to execute @BeforeAll in nonstatic method and access field of test class
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ListingCreatorTest {
-
-  private static final String TEST_TEMPLATE = """
-      ${foreach $products as $product}  - Product:
-          - Key: ${product.key}
-          - Name: ${product.name}
-          - ImageUrl: ${product.imageUrl}
-          - Description: ${product.description}
-      ${/foreach}""";
-
-  @InjectMock
-  TemplateRepository repository;
 
   Store<Product> originalStore;
   Store<Product> store;
@@ -66,26 +54,7 @@ class ListingCreatorTest {
   }
 
   @Test
-  void shouldSkipListingForMissingForeachTokens() {
-    // given
-    when(repository.getTemplate("listing")).thenReturn("");
-
-    addToStore(new StoreContent("key", new Product("name", "description", "imageUrl"),
-        Metadata.of(EventTime.of(1L), Action.PUBLISH)
-    ));
-
-    // when
-    Message<Page> result = cut.createListingPage(EventTime.of(1L));
-
-    // then
-    assertThat(result).isNull();
-  }
-
-  @Test
   void shouldReturnEmptyListing() {
-    // given
-    when(repository.getTemplate("listing")).thenReturn(TEST_TEMPLATE);
-
     // when
     Message<Page> result = cut.createListingPage(EventTime.of(1L));
 
@@ -97,7 +66,6 @@ class ListingCreatorTest {
   @Test
   void shouldSkipUnpublishedProducts() {
     // given
-    when(repository.getTemplate("listing")).thenReturn(TEST_TEMPLATE);
     addToStore(new StoreContent("key", null,
         Metadata.of(EventTime.of(1L), Action.UNPUBLISH)
     ));
@@ -113,7 +81,6 @@ class ListingCreatorTest {
   @Test
   void shouldCreateListing() {
     // given
-    when(repository.getTemplate("listing")).thenReturn(TEST_TEMPLATE);
     addToStore(new StoreContent(
         "key",
         new Product("name", "description", "imageUrl"),

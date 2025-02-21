@@ -31,8 +31,8 @@ class RelayTest {
 
   @BeforeEach
   void setUp() {
-    source = connector.source(Relay.CHANNEL_PRODUCTS);
-    sink = connector.sink(Relay.CHANNEL_RELAYED_PRODUCTS);
+    source = connector.source(Relay.MESSAGES_CHANNEL);
+    sink = connector.sink(Relay.RELAYED_MESSAGE_CHANNEL);
   }
 
   @Test

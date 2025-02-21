@@ -10,7 +10,7 @@ import jakarta.inject.Inject;
 import java.nio.ByteBuffer;
 import java.util.function.Function;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
-import org.example.project.model.Json;
+import org.example.project.model.WebResource;
 import org.example.project.model.Page;
 import org.jboss.logging.Logger;
 
@@ -18,7 +18,7 @@ import org.jboss.logging.Logger;
 public class WebSink {
 
   public static final String CHANNEL_PAGES = "pages";
-  public static final String CHANNEL_JSONS = "jsons";
+  public static final String CHANNEL_WEB_RESOUCRES = "web-resources";
 
   @Inject
   Logger log;
@@ -29,8 +29,8 @@ public class WebSink {
   @FromChannel(CHANNEL_PAGES)
   Store<Long> pageEventTimeByKey;
 
-  @FromChannel(CHANNEL_JSONS)
-  Store<Long> jsonEventTimeByKey;
+  @FromChannel(CHANNEL_WEB_RESOUCRES)
+  Store<Long> webResourcesEventTimeByKey;
 
   @Inject
   FileSystem fileSystem;
@@ -40,20 +40,16 @@ public class WebSink {
     process(page, Page::getContent, key, action, eventTime);
   }
 
-  @Incoming(CHANNEL_JSONS)
-  public void consume(Json json, Key key, Action action, EventTime eventTime) {
-    process(json, Json::getContent, key, action, eventTime);
+  @Incoming(CHANNEL_WEB_RESOUCRES)
+  public void consume(WebResource webResource, Key key, Action action, EventTime eventTime) {
+    process(webResource, WebResource::getContent, key, action, eventTime);
   }
 
   private <T> void process(T entity, Function<T, ByteBuffer> byteExtractor,
       Key key, Action action, EventTime eventTime) {
-    if (key == null || action == null || eventTime == null) { // FIXME is this required?
-      log.trace("Skipping storing of resource without required metadata");
-    } else {
-      log.tracef("Storing json: key %s, action %s, event time %s", key, action, eventTime);
-      ByteBuffer byteBuffer = entity != null ? byteExtractor.apply(entity) : null;
-      updateStorage(byteBuffer, key.getValue(), action);
-    }
+    log.tracef("Storing json: key %s, action %s, event time %s", key, action, eventTime);
+    ByteBuffer byteBuffer = entity != null ? byteExtractor.apply(entity) : null;
+    updateStorage(byteBuffer, key.getValue(), action);
   }
 
   private void updateStorage(ByteBuffer byteBuffer, String key, Action action) {

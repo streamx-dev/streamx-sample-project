@@ -3,7 +3,11 @@ package org.example.project.graphql;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
+import static org.example.project.graphql.ProductRepository.CHANNEL_PRODUCTS;
 
+import dev.streamx.quasar.reactive.messaging.Store;
+import dev.streamx.quasar.reactive.messaging.Store.Entry;
+import dev.streamx.quasar.reactive.messaging.annotations.FromChannel;
 import dev.streamx.quasar.reactive.messaging.metadata.Action;
 import dev.streamx.quasar.reactive.messaging.metadata.EventTime;
 import dev.streamx.quasar.reactive.messaging.metadata.Key;
@@ -19,11 +23,12 @@ import org.assertj.core.groups.Tuple;
 import org.eclipse.microprofile.reactive.messaging.Message;
 import org.eclipse.microprofile.reactive.messaging.Metadata;
 import org.example.project.model.Product;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 @QuarkusTest
-class GraphQLSinkTest {
+class GraphQLTest {
 
   public static final String KEY = "key";
   public static final String NAME = "name";
@@ -63,13 +68,24 @@ class GraphQLSinkTest {
   private InMemorySource<Message<Product>> source;
 
   @Inject
-  InMemoryProductRepository productRepository;
+  ProductRepository productRepository;
+
+  @FromChannel(CHANNEL_PRODUCTS)
+  Store<Product> store;
 
   @BeforeEach
   void setUp() {
-    productRepository.clear();
+    source = connector.source(CHANNEL_PRODUCTS);
+  }
 
-    source = connector.source(GraphQLSink.CHANNEL_PRODUCTS);
+  @AfterEach
+  void tearDown() {
+    store.entries()
+        .map(Entry::key)
+        .forEach(this::unpublish);
+    await().until(() -> store.entries()
+        .filter(e -> e.value() != null)
+        .findAny().isEmpty());
   }
 
   @Test

@@ -3,7 +3,7 @@
 This project contains sample implementations of StreamX to demonstrate how to use StreamX.
 These services can be used to create sample StreamX mesh.
 
-Please note that these services are not production-ready!
+Full documentation is available on https://www.streamx.dev/guides/index.html.
 
 ## Project structure
 
@@ -11,7 +11,8 @@ Each StreamX project should be organized in a specific way and should follow the
 
 The following are recommended directories:
 
-* [mesh](./mesh/README.md) - resources required to run StreamX Mesh
+* [data](./data/README.md) - sample data should be placed here
+* [mesh](./mesh/README.md) - resources required to configure and run StreamX Mesh
 * [scripts](./scripts/README.md) - all useful scripts and resources should be placed here
 * [services](./services/README.md) - your StreamX Processing and Delivery Services (as well as other Maven modules) should be placed here
 
@@ -69,7 +70,7 @@ For more information, visit [StreamX CLI Reference](https://www.streamx.dev/guid
 Optionally run script to trigger sample publications and see results:
 
 ```bash
-sh scripts/publish-all.sh
+streamx batch publish data
 ```
 
 To see results of publication - visit:
@@ -94,8 +95,8 @@ delivery:
     incoming:
       pages:
         topic: outboxes/pages
-      jsons:
-        topic: outboxes/jsons
+      web-resources:
+        topic: outboxes/web-resources
     port: 8081
 ```
 
@@ -105,9 +106,9 @@ cd mesh
 streamx run
 ```
 
-Finally make sure that the `application-streamx-mesh-dev.properties` file in the debugged service reflects the mesh configuration (topics configuration, exposed port, etc.). 
-Then run the debugged service with the `streamx-mesh-dev` profile, e.g. for `graphql-delivery-service` run the following command: 
+Finally make sure that the `application-streamx-mesh-debug.properties` file in the debugged service reflects the mesh configuration (topics configuration, exposed port, etc.). 
+Then run the debugged service with the `streamx-mesh-debug` profile, e.g. for `graphql-delivery-service` run the following command: 
 ```shell
 cd services/graphql-delivery-service
-quarkus dev -Dquarkus.profile=streamx-mesh-dev
+quarkus dev -Dquarkus.profile=streamx-mesh-debug
 ```

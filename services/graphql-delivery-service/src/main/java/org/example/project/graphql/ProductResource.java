@@ -6,7 +6,6 @@ import org.eclipse.microprofile.graphql.Description;
 import org.eclipse.microprofile.graphql.GraphQLApi;
 import org.eclipse.microprofile.graphql.Name;
 import org.eclipse.microprofile.graphql.Query;
-import org.example.project.graphql.InMemoryProductRepository.Product;
 import org.jboss.logging.Logger;
 
 @GraphQLApi
@@ -16,18 +15,18 @@ public class ProductResource {
   Logger log;
 
   @Inject
-  InMemoryProductRepository repository;
+  ProductRepository repository;
 
   @Query("allProducts")
   @Description("Get all Products")
-  public List<Product> getAllProducts() {
+  public List<StoreProduct> getAllProducts() {
     log.trace("Get all Products");
     return repository.getAllProducts();
   }
 
   @Query("getProduct")
   @Description("Get Product by key")
-  public Product getProduct(@Name("key") String key) {
+  public StoreProduct getProduct(@Name("key") String key) {
     log.tracef("Get Product by key %s", key);
     return repository.getProduct(key);
   }

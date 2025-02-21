@@ -1,6 +1,6 @@
-${foreach $products as $product}  - Product:
-    - Key: ${product.key}
-    - Name: ${product.name}
-    - ImageUrl: ${product.imageUrl}
-    - Description: ${product.description}
-${/foreach}
+{{#products}}  - Product:
+    - Key: {{key}}
+    - Name: {{name}}
+    - ImageUrl: {{imageUrl}}
+    - Description: {{description}}
+{{/products}}

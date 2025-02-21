@@ -5,3 +5,4 @@ This folder contains the data needed to run the mesh. It contains the following:
 * [secrets](./secrets) - contains the mesh configuration that cannot be shared because it contains sensitive data
 * [mesh.yaml](./mesh.yaml) - configures mesh services using values located in `./secrets` and `./configs`
 
+Full mesh reference is available on https://www.streamx.dev/guides/streamx-mesh-yaml-reference.html.

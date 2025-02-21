@@ -7,6 +7,8 @@ Fills predefined templates with product data. As a result it produces two pages:
 This sample service contains usage of `Store` in [ListingCreator](./src/main/java/com/example/project/template/ListingCreator.java). 
 Mocking `Store` is implemented in [ListingCreatorTest](./src/test/java/com/example/project/template/ListingCreatorTest.java).
 
+To read Processing Service reference visit https://www.streamx.dev/guides/delivery-service-reference.html.
+
 ## Configuration
 ### Channels
 
@@ -15,9 +17,3 @@ Incoming channels:
 
 Outgoing channels: 
 - `pages`
-
-### Example environment variables config
-```
-MP_MESSAGING_INCOMING_PRODUCTS_TOPIC: "persistent://streamx/inboxes/products"
-MP_MESSAGING_OUTGOING_PAGES_TOPIC: "persistent://streamx/outboxes/pages"
-```

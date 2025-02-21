@@ -1,0 +1,5 @@
+{
+  "name": { "string": "Spray bottle"},
+  "description": { "string": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vitae elit eget purus venenatis feugiat eget eget lorem. Donec eu egestas felis, vel viverra urna. Proin pellentesque porta quam, at commodo metus suscipit vel. Cras rhoncus, arcu non dapibus feugiat, felis odio laoreet nunc, in sagittis justo quam quis augue. Nullam tincidunt ante id cursus suscipit. Mauris tortor ipsum, dapibus in condimentum ac, consequat at quam. Nunc nec tristique tortor. Etiam euismod tristique lacus, a sollicitudin odio auctor rhoncus. In blandit ullamcorper eros, in ultricies enim ultrices at." },
+  "imageUrl": { "string": "/static/images/product-1.webp" }
+}

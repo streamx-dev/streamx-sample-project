@@ -8,7 +8,9 @@ defaultImageTag: latest-jvm
 sources:
   cli:
     outgoing:
+      - "pages"
       - "products"
+      - "web-resources"
 
 ingestion:
   rest-ingestion:
@@ -17,22 +19,47 @@ ingestion:
         - "ingestion.properties"
 
 processing:
-  relay:
+  page-relay:
     image: relay-processing-service
     incoming:
-      products:
+      messages:
+        topic: inboxes/pages
+    outgoing:
+      relayed-messages:
+        topic: outboxes/pages
+    environment:
+      MP_MESSAGING_INCOMING_MESSAGES_SCHEMA: "page-schema"
+      MP_MESSAGING_OUTGOING_RELAYED-MESSAGES_SCHEMA: "page-schema"
+  product-relay:
+    image: relay-processing-service
+    incoming:
+      messages:
         topic: inboxes/products
     outgoing:
-      relayed-products:
+      relayed-messages:
         topic: outboxes/products
+    environment:
+      MP_MESSAGING_INCOMING_MESSAGES_SCHEMA: "product-schema"
+      MP_MESSAGING_OUTGOING_RELAYED-MESSAGES_SCHEMA: "product-schema"
+  web-resource-relay:
+    image: relay-processing-service
+    incoming:
+      messages:
+        topic: inboxes/web-resources
+    outgoing:
+      relayed-messages:
+        topic: outboxes/web-resources
+    environment:
+      MP_MESSAGING_INCOMING_MESSAGES_SCHEMA: "web-resource-schema"
+      MP_MESSAGING_OUTGOING_RELAYED-MESSAGES_SCHEMA: "web-resource-schema"
   json-converter:
     image: json-converter-processing-service
     incoming:
       products:
         topic: inboxes/products
     outgoing:
-      jsons:
-        topic: outboxes/jsons
+      web-resources:
+        topic: outboxes/web-resources
   template:
     image: template-processing-service
     incoming:
@@ -41,6 +68,9 @@ processing:
     outgoing:
       pages:
         topic: outboxes/pages
+    volumesFrom:
+      configs:
+        - "templates:/deployments/templates"
 
 delivery:
   graphql:
@@ -54,6 +84,6 @@ delivery:
     incoming:
       pages:
         topic: outboxes/pages
-      jsons:
-        topic: outboxes/jsons
+      web-resources:
+        topic: outboxes/web-resources
     port: 8081

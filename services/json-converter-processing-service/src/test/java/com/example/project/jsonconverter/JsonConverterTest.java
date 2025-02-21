@@ -14,7 +14,7 @@ import jakarta.enterprise.inject.Any;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.reactive.messaging.Message;
 import org.eclipse.microprofile.reactive.messaging.Metadata;
-import org.example.project.model.Json;
+import org.example.project.model.WebResource;
 import org.example.project.model.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,12 +27,12 @@ class JsonConverterTest {
   InMemoryConnector connector;
 
   private InMemorySource<Message<Product>> source;
-  private InMemorySink<Json> sink;
+  private InMemorySink<WebResource> sink;
 
   @BeforeEach
   void setUp() {
     source = connector.source(JsonConverter.CHANNEL_PRODUCTS);
-    sink = connector.sink(JsonConverter.CHANNEL_JSONS);
+    sink = connector.sink(JsonConverter.CHANNEL_WEB_RESOURCES);
   }
 
   @Test
@@ -49,7 +49,7 @@ class JsonConverterTest {
 
     // then
     assertThat(sink.received()).hasSize(1);
-    Message<Json> message = sink.received().get(0);
+    Message<WebResource> message = sink.received().get(0);
     assertKey(message, "jsons/key.json");
     assertEventTime(message, 1L);
     assertAction(message, Action.PUBLISH);
@@ -73,7 +73,7 @@ class JsonConverterTest {
 
     // then
     assertThat(sink.received()).hasSize(1);
-    Message<Json> message = sink.received().get(0);
+    Message<WebResource> message = sink.received().get(0);
     assertKey(message, "jsons/key.json");
     assertEventTime(message, 1L);
     assertAction(message, Action.UNPUBLISH);
@@ -101,7 +101,7 @@ class JsonConverterTest {
         .isEqualTo(action);
   }
 
-  private static void assertPayload(Message<Json> message, String content) {
+  private static void assertPayload(Message<WebResource> message, String content) {
     if (content == null) {
       assertThat(message.getPayload()).isNull();
     } else {

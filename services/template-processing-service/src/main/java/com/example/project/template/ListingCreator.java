@@ -1,8 +1,10 @@
 package com.example.project.template;
 
+import static com.example.project.template.TemplateConfig.LISTING_TEMPLATE_NAME;
 import static dev.streamx.quasar.reactive.messaging.metadata.Action.PUBLISH;
 import static dev.streamx.quasar.reactive.messaging.metadata.Action.UNPUBLISH;
 
+import com.github.mustachejava.Mustache;
 import dev.streamx.quasar.reactive.messaging.Store;
 import dev.streamx.quasar.reactive.messaging.Store.Entry;
 import dev.streamx.quasar.reactive.messaging.annotations.FromChannel;
@@ -12,8 +14,13 @@ import dev.streamx.quasar.reactive.messaging.utils.MetadataUtils;
 import io.smallrye.reactive.messaging.GenericPayload;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.eclipse.microprofile.reactive.messaging.Message;
 import org.eclipse.microprofile.reactive.messaging.Metadata;
 import org.example.project.model.Page;
@@ -25,10 +32,6 @@ class ListingCreator {
 
   private static final String RESULT_KEY = "products.html";
 
-  private static final String FOREACH_START_TOKEN = "${foreach $products as $product}";
-  private static final String FOREACH_END_TOKEN = "${/foreach}";
-  private static final String TEMPLATE_NAME = "listing";
-
   @FromChannel(TemplateProcessor.CHANNEL_PRODUCTS)
   Store<Product> store;
 
@@ -36,7 +39,8 @@ class ListingCreator {
   Logger log;
 
   @Inject
-  TemplateRepository repository;
+  @Named(LISTING_TEMPLATE_NAME)
+  Mustache mustache;
 
   Message<Page> createListingPage(EventTime eventTime) {
     List<Entry<GenericPayload<Product>>> entries = fetchStoreEntries();
@@ -47,21 +51,15 @@ class ListingCreator {
 
       return Message.of(null, Metadata.of(UNPUBLISH, eventTime, Key.of(RESULT_KEY)));
     } else {
-      log.tracef("No products to create listing for. Unpublishing listing page '%s'.",
-          RESULT_KEY);
+      try {
+        log.tracef("Preparing listing page '%s'.", RESULT_KEY);
+        String result = processTemplate(entries);
 
-      String template = repository.getTemplate(TEMPLATE_NAME);
-      Replacement replacement = extractBetween(template, FOREACH_START_TOKEN, FOREACH_END_TOKEN);
-      if (replacement == null) {
-        log.warnf("Listing template page has no '%s' or '%s'. Skipping processing listing page '%s'.",
-            FOREACH_START_TOKEN, FOREACH_END_TOKEN, RESULT_KEY);
-        return null;
+        log.tracef("Publishing listing page '%s'.", RESULT_KEY);
+        return Message.of(new Page(result), Metadata.of(PUBLISH, eventTime, Key.of(RESULT_KEY)));
+      } catch (IOException e) {
+        throw new RuntimeException(e);
       }
-
-      List<String> fragments = convertForEachFragments(entries, replacement);
-      String result = createResult(template, replacement, fragments);
-
-      return Message.of(new Page(result), Metadata.of(PUBLISH, eventTime, Key.of(RESULT_KEY)));
     }
   }
 
@@ -72,52 +70,27 @@ class ListingCreator {
         .toList();
   }
 
-  private static Replacement extractBetween(String text, String start, String end) {
-    int startIndex = text.indexOf(start);
-    if (startIndex == -1) {
-      return null; // Start token not found
-    }
-    int fragmentStartIndex = startIndex + start.length();
+  private String processTemplate(List<Entry<GenericPayload<Product>>> entries) throws IOException {
+    StringWriter writer = new StringWriter();
+    Map<String, Object> context = prepareModel(entries);
 
-    int fragmentEndIndex = text.indexOf(end, fragmentStartIndex);
-    if (fragmentEndIndex == -1) {
-      return null; // End token not found
-    }
-    int endIndex = fragmentEndIndex + end.length();
-
-    String replacementText = text.substring(fragmentStartIndex, fragmentEndIndex);
-
-    return new Replacement(startIndex, endIndex, replacementText);
+    mustache.execute(writer, context).flush();
+    return writer.toString();
   }
 
-  private record Replacement(int startIndex, int endIndex, String processedFragment) { }
+  private static Map<String, Object> prepareModel(
+      List<Entry<GenericPayload<Product>>> entries) {
+    List<ProductModel> productModels = entries.stream()
+        .map(entry -> {
+          String key = entry.key();
+          Product product = entry.value().getPayload();
 
-  private List<String> convertForEachFragments(List<Entry<GenericPayload<Product>>> entries,
-      Replacement replacement) {
-    return entries.stream()
-        .map(entry -> convertFragment(replacement, entry))
+          return new ProductModel(key,
+              product.getName(), product.getDescription(), product.getImageUrl());
+        })
         .toList();
-  }
-
-  private static String convertFragment(Replacement replacement, Entry<GenericPayload<Product>> entry) {
-    Product product = entry.value().getPayload();
-    String key = entry.key();
-
-    return replacement.processedFragment()
-        .replaceAll("\\$\\{product.key}", key)
-        .replaceAll("\\$\\{product.name}", product.getName())
-        .replaceAll("\\$\\{product.description}", product.getDescription())
-        .replaceAll("\\$\\{product.imageUrl}", product.getImageUrl());
-  }
-
-  private static String createResult(String template,
-      Replacement replacement, List<String> fragments) {
-    StringBuilder sb = new StringBuilder();
-
-    sb.append(template.substring(0, replacement.startIndex()));
-    fragments.forEach(sb::append);
-    sb.append(template.substring(replacement.endIndex()));
-
-    return sb.toString();
+    Map<String, Object> context = new HashMap<>();
+    context.put("products", productModels);
+    return context;
   }
 }

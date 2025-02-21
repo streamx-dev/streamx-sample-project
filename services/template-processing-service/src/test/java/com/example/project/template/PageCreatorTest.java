@@ -8,8 +8,7 @@ import static com.example.project.template.TestUtils.assertPayload;
 import dev.streamx.quasar.reactive.messaging.metadata.Action;
 import dev.streamx.quasar.reactive.messaging.metadata.EventTime;
 import dev.streamx.quasar.reactive.messaging.metadata.Key;
-import io.quarkus.test.InjectMock;
-import io.quarkus.test.component.QuarkusComponentTest;
+import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import java.util.stream.Stream;
 import org.assertj.core.api.Assertions;
@@ -20,16 +19,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mockito;
 
-// All fields of tested class are mocks, so we can use @QuarkusComponentTest which is faster then @QuarkusTest
-@QuarkusComponentTest
+@QuarkusTest
 class PageCreatorTest {
 
   private static final String TEST_KEY = "testKey";
-
-  @InjectMock
-  TemplateRepository repository;
 
   @Inject
   PageCreator cut;
@@ -53,12 +47,8 @@ class PageCreatorTest {
 
   @ParameterizedTest
   @MethodSource(value = "source")
-  void shouldReplaceKey(String template,
-      String name, String description, String imageUrl,
+  void shouldReplaceKey(String name, String description, String imageUrl,
       String result) {
-    // given
-    mockPageInRepository(template);
-
     // when
     Message<Page> message = cut.createProductPage(Key.of(TEST_KEY),
         new Product(name, description, imageUrl),
@@ -77,22 +67,37 @@ class PageCreatorTest {
   static Stream<Arguments> source() {
     return Stream.of(
         Arguments.of(
-            "${product.key}", null, null, null, TEST_KEY
+            null, null, null, """
+                - Key: testKey
+                - Name:\s
+                - ImageUrl:\s
+                - Description:\s
+                """
         ),
         Arguments.of(
-            "${product.name}", "name", null, null, "name"
+            "name", null, null,  """
+                - Key: testKey
+                - Name: name
+                - ImageUrl:\s
+                - Description:\s
+                """
         ),
         Arguments.of(
-            "${product.description}", null, "description", null, "description"
+            null, "description", null,  """
+                - Key: testKey
+                - Name:\s
+                - ImageUrl:\s
+                - Description: description
+                """
         ),
         Arguments.of(
-            "${product.imageUrl}", null, null, "imageUrl", "imageUrl"
+            null, null, "imageUrl",  """
+                - Key: testKey
+                - Name:\s
+                - ImageUrl: imageUrl
+                - Description:\s
+                """
         )
     );
-  }
-
-  private void mockPageInRepository(String template) {
-    Mockito.when(repository.getTemplate("page"))
-        .thenReturn(template);
   }
 }

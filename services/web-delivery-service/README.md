@@ -6,7 +6,10 @@ However, it exposes different types of files:
 
 - files ingested via `pages` channel
 - files embedded into delivery service (css and images in [resources](./src/main/resources/META-INF/resources))
-- files json-serialized products
+- json-serialized products
+- images for products
+
+To read Delivery Service reference visit https://www.streamx.dev/guides/delivery-service-reference.html.
 
 ## Configuration
 
@@ -16,11 +19,4 @@ However, it exposes different types of files:
 
 Incoming channels:
 - `pages` 
-- `jsons`
-
-### Example environment variables config
-
-```
-MP_MESSAGING_INCOMING_PAGES_TOPIC: "persistent://streamx/outboxes/pages"
-MP_MESSAGING_INCOMING_JSONS_TOPIC: "persistent://streamx/outboxes/jsons"
-```
+- `web-resources`

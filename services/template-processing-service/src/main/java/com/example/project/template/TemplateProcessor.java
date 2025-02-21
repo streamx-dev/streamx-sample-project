@@ -44,6 +44,7 @@ public class TemplateProcessor {
         key, action, eventTime);
 
     Message<Page> productPage = pageCreator.createProductPage(key, product, action, eventTime);
+    // listing is regenerated for every product update to avoid complicated business logic
     Message<Page> listingPage = listingCreator.createListingPage(eventTime);
 
     return Multi.createFrom().items(
