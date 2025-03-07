@@ -1,6 +1,6 @@
 # Data Model
 
-This Maven module contains Java classes that are used in `@Incoming`/`@Outgoing` channels.
+This Maven module contains Java classes representing message payloads that are used in `@Incoming`/`@Outgoing` channels.
 
 As StreamX is using Avro to serialize, each class must be annotated with `org.apache.avro.specific.@AvroGenerated`.
 Each model class also needs empty constructor.

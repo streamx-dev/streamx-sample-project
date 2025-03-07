@@ -1,7 +1,6 @@
 # For full reference for Mesh Definition visit: https://www.streamx.dev/guides/streamx-mesh-yaml-reference.html
 
-# Change Me
-defaultRegistry: ghcr.io/streamx-dev/streamx-project-template
+defaultRegistry: example-registry.com/org-example/example-project
 defaultImageTag: latest-jvm
 
 # Sources defines channels that ingestors are allowed to ingest. For more visit: https://www.streamx.dev/guides/streamx-mesh-yaml-reference.html#sources

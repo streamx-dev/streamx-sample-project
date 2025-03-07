@@ -37,6 +37,18 @@ scoop bucket add streamx-dev https://github.com/streamx-dev/scoop-streamx-dev.gi
 scoop install streamx
 ```
 
+To upgrade StreamX CLI, run:
+```sh
+# for Linux/MacOS
+brew update
+brew upgrade streamx
+```
+or
+```shell
+# for Windows
+scoop update streamx
+```
+
 For more information, visit [StreamX CLI Reference](https://www.streamx.dev/guides/streamx-command-line-interface-reference.html#_installing_the_cli).
 
 ## Packaging

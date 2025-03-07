@@ -1,19 +1,22 @@
 # Web Delivery Service
 
-This sample delivery service has one goal - to expose static files on HTTP port.
+This sample delivery service expose received pages and web resources as static files on HTTP port.
+The pages and web resources are updated on every publish action and are removed on unpublish.
 
-However, it exposes different types of files:
+It exposes different types of files:
 
-- files ingested via `pages` channel
-- files embedded into delivery service (css and images in [resources](./src/main/resources/META-INF/resources))
-- json-serialized products
-- images for products
+- files ingested via the `pages` channel
+- static web resources invested via the `web-resources` channel. This includes:
+  - json-serialized products
+  - images for products
+  - static assets (css and js files)
 
 To read Delivery Service reference visit https://www.streamx.dev/guides/delivery-service-reference.html.
 
 ## Configuration
 
-- `example.resources.directory` - web storage location, default: `/tmp/streamx`
+- `example.resources.directory` - web storage location. 
+Default: `/tmp/streamx`
 
 ### Channels
 

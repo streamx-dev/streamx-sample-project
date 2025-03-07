@@ -2,22 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.example</groupId> <!-- Change Me -->
-  <artifactId>example-project</artifactId> <!-- Change Me -->
+  <groupId>org.example</groupId>
+  <artifactId>example-project</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Example : Project</name> <!-- Change Me -->
+  <name>Example : Project</name>
 
   <modules>
     <module>services</module>
   </modules>
-
-  <scm>
-    <connection>scm:git:git@github.com:streamx-dev/streamx-project-template.git</connection> <!-- Change Me -->
-    <developerConnection>scm:git:git@github.com:streamx-dev/streamx-project-template.git</developerConnection> <!-- Change Me -->
-    <tag>HEAD</tag>
-    <url>https://github.com/streamx-dev/streamx-project-template</url> <!-- Change Me -->
-  </scm>
 
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
@@ -46,8 +39,8 @@
 
     <!--  Docker  -->
     <quarkus.container-image.build>true</quarkus.container-image.build>
-    <quarkus.container-image.registry>ghcr.io</quarkus.container-image.registry>
-    <quarkus.container-image.group>streamx-dev/streamx-project-template</quarkus.container-image.group> <!-- Change Me -->
+    <quarkus.container-image.registry>example-registry.com</quarkus.container-image.registry>
+    <quarkus.container-image.group>org-example/example-project</quarkus.container-image.group>
     <quarkus.container-image.name>${project.artifactId}</quarkus.container-image.name>
     <quarkus.container-image.package.type>jvm</quarkus.container-image.package.type>
     <quarkus.container-image.tag>${project.version}-${quarkus.container-image.package.type}</quarkus.container-image.tag>

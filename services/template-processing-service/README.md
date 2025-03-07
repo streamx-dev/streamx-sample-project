@@ -10,6 +10,11 @@ Mocking `Store` is implemented in [ListingCreatorTest](./src/test/java/com/examp
 To read Processing Service reference visit https://www.streamx.dev/guides/delivery-service-reference.html.
 
 ## Configuration
+
+- `example.templates.directory` - location of templates. 
+Provided path should contain two template files: `listing.html` and `page.html`.
+Default: `/deployments/templates`
+
 ### Channels
 
 Incoming channels:
