@@ -10,6 +10,7 @@ import dev.streamx.quasar.reactive.messaging.metadata.EventTime;
 import dev.streamx.quasar.reactive.messaging.metadata.Key;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import java.util.Comparator;
 import java.util.List;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.example.project.model.Product;
@@ -36,6 +37,7 @@ public class ProductRepository {
   public List<StoreProduct> getAllProducts() {
     return store.entries()
         .filter(entry -> nonNull(entry.value()))
+        .sorted(Comparator.comparing(Entry::key))
         .map(Entry::value)
         .toList();
   }

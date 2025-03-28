@@ -17,6 +17,7 @@ import io.smallrye.reactive.messaging.memory.InMemorySink;
 import io.smallrye.reactive.messaging.memory.InMemorySource;
 import jakarta.enterprise.inject.Any;
 import jakarta.inject.Inject;
+import java.util.Comparator;
 import java.util.stream.Stream;
 import org.eclipse.microprofile.reactive.messaging.Message;
 import org.eclipse.microprofile.reactive.messaging.Metadata;
@@ -84,16 +85,20 @@ class TemplateProcessorTest {
     Product data = new Product("name", "description", "imageUrl");
     String otherKey = "otherKey";
     Product otherData = new Product("otherName", "otherDescription", "otherImageUrl");
+    Long currentTime = System.currentTimeMillis();
 
     // when
-    source.send(Message.of(data, Metadata.of(
+    Message<Product> message1 = Message.of(data, Metadata.of(
         Key.of(key),
         EventTime.of(FIRST_MESSAGE_EVENT_TIME),
-        Action.PUBLISH)));
-    source.send(Message.of(otherData, Metadata.of(
+        Action.PUBLISH));
+
+    source.send(message1);
+    Message<Product> message2 = Message.of(otherData, Metadata.of(
         Key.of(otherKey),
         EventTime.of(LAST_MESSAGE_EVENT_TIME),
-        Action.PUBLISH)));
+        Action.PUBLISH));
+    source.send(message2);
 
     String resultKey = LISTING_PAGE;
     await().until(() -> {
@@ -102,14 +107,17 @@ class TemplateProcessorTest {
     });
 
     // then
-    assertThat(messagesWithKey(resultKey).count()).isEqualTo(LAST_MESSAGE_EVENT_TIME);
+    assertThat(messagesWithKey(resultKey).count()).isEqualTo(2);
     Message<Page> message = messagesWithKey(resultKey)
-        .filter(pageMessage -> MetadataUtils.extractEventTime(pageMessage).equals(
-            LAST_MESSAGE_EVENT_TIME))
-        .findFirst().get();
+        .max(Comparator.comparing(MetadataUtils::extractEventTime))
+        .get();
 
     assertKey(message, LISTING_PAGE);
-    assertEventTime(message, LAST_MESSAGE_EVENT_TIME);
+    assertThat(message.getMetadata(EventTime.class)
+        .map(EventTime::getValue)
+        .orElse(null))
+        .isGreaterThanOrEqualTo(currentTime);
+
     assertAction(message, Action.PUBLISH);
     assertPayload(message, """
           - Product:

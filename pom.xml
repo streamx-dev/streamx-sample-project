@@ -27,7 +27,7 @@
     <jandex-maven-plugin.version>3.2.0</jandex-maven-plugin.version>
 
     <!--  StreamX  -->
-    <streamx.version>1.0.3</streamx.version>
+    <streamx.version>1.0.13</streamx.version>
 
     <!--  Pulsar client version override  -->
     <pulsar.client.version>4.0.0</pulsar.client.version>

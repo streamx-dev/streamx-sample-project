@@ -89,6 +89,8 @@ To see results of publication - visit:
 * [Generated pages](http://localhost:8081/products.html) 
 * [GraphQL Console](http://localhost:8084/q/graphql-ui/) and launch some queries (details in [GraphqlDeliveryService](./services/graphql-delivery-service/README.md))
 
+For more information, visit [StreamX CLI Reference](https://www.streamx.dev/guides/streamx-command-line-interface-reference.html#_streamx_batch).
+
 ## Debugging
 
 If you need to debug a single service as part of the StreamX Mesh, you need to comment out debugged service in your mesh YAML  

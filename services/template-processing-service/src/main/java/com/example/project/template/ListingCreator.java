@@ -32,18 +32,18 @@ class ListingCreator {
 
   private static final String RESULT_KEY = "products.html";
 
-  @FromChannel(TemplateProcessor.CHANNEL_PRODUCTS)
-  Store<Product> store;
-
   @Inject
   Logger log;
+
+  @Inject
+  ProductRepository productRepository;
 
   @Inject
   @Named(LISTING_TEMPLATE_NAME)
   Mustache mustache;
 
   Message<Page> createListingPage(EventTime eventTime) {
-    List<Entry<GenericPayload<Product>>> entries = fetchStoreEntries();
+    List<Entry<GenericPayload<Product>>> entries = productRepository.fetchStoreEntries();
 
     if (entries.isEmpty()) {
       log.tracef("No products in store to create listing from. Unpublishing listing page '%s'.",
@@ -61,13 +61,6 @@ class ListingCreator {
         throw new RuntimeException(e);
       }
     }
-  }
-
-  private List<Entry<GenericPayload<Product>>> fetchStoreEntries() {
-    return store.entriesWithMetadata()
-        .filter(message -> PUBLISH.equals(MetadataUtils.extractAction(message.value())))
-        .sorted(Comparator.comparing(Entry::key))
-        .toList();
   }
 
   private String processTemplate(List<Entry<GenericPayload<Product>>> entries) throws IOException {

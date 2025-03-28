@@ -4,9 +4,9 @@ import dev.streamx.quasar.reactive.messaging.metadata.Action;
 import dev.streamx.quasar.reactive.messaging.metadata.EventTime;
 import dev.streamx.quasar.reactive.messaging.metadata.Key;
 import io.smallrye.mutiny.Multi;
+import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.eclipse.microprofile.reactive.messaging.Acknowledgment;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Message;
 import org.eclipse.microprofile.reactive.messaging.Metadata;
@@ -32,7 +32,6 @@ public class TemplateProcessor {
 
   @Incoming(CHANNEL_PRODUCTS)
   @Outgoing(CHANNEL_PAGES)
-  @Acknowledgment(Acknowledgment.Strategy.POST_PROCESSING)
   public Multi<Message<Page>> process(Message<Product> message) {
     Product product = message.getPayload();
     Metadata metadata = message.getMetadata();
@@ -45,12 +44,14 @@ public class TemplateProcessor {
 
     Message<Page> productPage = pageCreator.createProductPage(key, product, action, eventTime);
     // listing is regenerated for every product update to avoid complicated business logic
-    Message<Page> listingPage = listingCreator.createListingPage(eventTime);
+    Message<Page> listingPage = listingCreator.createListingPage(
+        EventTime.of(System.currentTimeMillis())
+    );
 
     return Multi.createFrom().items(
         productPage,
         listingPage
-    );
+    ).onCompletion().call(() -> Uni.createFrom().completionStage(message.ack()));
   }
 
   private static <T> T getMetadataField(Metadata metadata, Class<T> metadataFieldClass) {
