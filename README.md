@@ -1,4 +1,4 @@
-# StreamX Project Template
+# StreamX Sample Project
 
 This project contains sample implementations of StreamX to demonstrate how to use StreamX.
 These services can be used to create sample StreamX mesh.
