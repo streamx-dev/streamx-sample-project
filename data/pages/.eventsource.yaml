@@ -1,0 +1,7 @@
+channel: pages
+relativePathLevel: 0
+key: /${relativePath}
+
+payload:
+  content:
+    bytes: file://${payloadPath}

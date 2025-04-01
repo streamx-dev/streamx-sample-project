@@ -1,0 +1,72 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <meta name="description"
+          content="This example presents how to change static html files located on your local into pages available via StreamX">
+    <link href="/static/css/output.css" rel="stylesheet">
+    <script src="/static/js/listing.js"></script>
+  </head>
+  <body class="m-0 flex flex-col min-h-screen">
+    <header>
+      <nav class="bg-white">
+        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+          <div class="relative flex sm:h-16 items-center justify-between">
+            <div class="flex flex-1 items-center justify-center sm:items-center flex-col sm:flex-row sm:justify-between flex-wrap sm:flex-nowrap">
+              <div class="flex flex-shrink-0 items-center">
+                <a href="/index.html" target="_self" class="px-3 py-2"><span class="text-indigo-600 font-semibold">StreamX sample project</span></a>
+              </div>
+              <div class="sm:ml-6 flex flex-wrap sm:flex-nowrap">
+                <div class="flex space-x-4 flex-wrap sm:flex-nowrap">
+                  <a href="/index.html" class="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100">Home</a>
+                  <a href="/products.html" class="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100">Products</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main class="flex-1">
+      <div class="bg-white">
+        <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+          <h2 class="text-2xl font-bold tracking-tight text-gray-900">Products</h2>
+          <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+            {{#products}}
+            <div class="group relative">
+              <div
+                  class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+                <img src="{{imageUrl}}" alt="{{name}}"
+                     class="h-full w-full object-cover object-center lg:h-full lg:w-full">
+              </div>
+              <div class="mt-4 flex justify-between">
+                <div>
+                  <h3 class="text-sm text-gray-700">
+                    <a href="/products/{{key}}.html">
+                      <span aria-hidden="true" class="absolute inset-0"></span>
+                      {{name}}
+                    </a>
+                  </h3>
+                </div>
+              </div>
+            </div>
+            {{/products}}
+          </div>
+        </div>
+        <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+          <h2 class="text-2xl font-bold tracking-tight text-gray-900">Products retrieved via GraphQL API</h2>
+          <div id="productsByGraphQL" class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+            Will be replaced by products fetched from GraphQL.
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <hr class="mt-6 mb-3 border-gray-200 mx-10">
+      <div class="flex flex-col items-center sm:flex-row sm:justify-center mb-3">
+        <p class="text-sm text-gray-500">© 2025 StreamX sample project</p>
+      </div>
+    </footer>
+  </body>
+</html>

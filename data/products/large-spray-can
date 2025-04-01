@@ -1,0 +1,5 @@
+{
+  "name": { "string": "Large Spray can mockup"},
+  "description": { "string": "Pellentesque fermentum a elit placerat porttitor. Morbi molestie dolor et quam tempor, nec suscipit neque hendrerit. Nullam dictum est at ex ornare commodo. Donec convallis ex ligula, in eleifend diam sollicitudin et. Donec porttitor enim bibendum risus rhoncus pellentesque. Mauris a vehicula velit, quis consectetur dolor. Proin porta ac risus in suscipit. Suspendisse nisl nunc, semper ut dapibus eu, congue eu arcu. Nulla facilisi. Donec quis libero vitae metus tristique porttitor quis vitae eros. Nulla feugiat nibh in condimentum venenatis. Aenean mi quam, tempus ac luctus nec, lobortis vel nulla. Ut ultricies mattis turpis, eu blandit nibh imperdiet quis." },
+  "imageUrl": { "string": "/static/images/product-3.webp" }
+}

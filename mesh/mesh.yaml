@@ -1,0 +1,88 @@
+# For full reference for Mesh Definition visit: https://www.streamx.dev/guides/streamx-mesh-yaml-reference.html
+
+defaultRegistry: example-registry.com/org-example/example-project
+defaultImageTag: latest-jvm
+
+# Sources defines channels that ingestors are allowed to ingest. For more visit: https://www.streamx.dev/guides/streamx-mesh-yaml-reference.html#sources
+sources:
+  cli:
+    outgoing:
+      - "pages"
+      - "products"
+      - "web-resources"
+
+ingestion:
+  rest-ingestion:
+    environmentFrom:
+      configs:
+        - "ingestion.properties"
+
+processing:
+  page-relay:
+    image: relay-processing-service
+    incoming:
+      messages:
+        topic: inboxes/pages
+    outgoing:
+      relayed-messages:
+        topic: outboxes/pages
+    environment:
+      MP_MESSAGING_INCOMING_MESSAGES_SCHEMA: "page-schema"
+      MP_MESSAGING_OUTGOING_RELAYED-MESSAGES_SCHEMA: "page-schema"
+  product-relay:
+    image: relay-processing-service
+    incoming:
+      messages:
+        topic: inboxes/products
+    outgoing:
+      relayed-messages:
+        topic: outboxes/products
+    environment:
+      MP_MESSAGING_INCOMING_MESSAGES_SCHEMA: "product-schema"
+      MP_MESSAGING_OUTGOING_RELAYED-MESSAGES_SCHEMA: "product-schema"
+  web-resource-relay:
+    image: relay-processing-service
+    incoming:
+      messages:
+        topic: inboxes/web-resources
+    outgoing:
+      relayed-messages:
+        topic: outboxes/web-resources
+    environment:
+      MP_MESSAGING_INCOMING_MESSAGES_SCHEMA: "web-resource-schema"
+      MP_MESSAGING_OUTGOING_RELAYED-MESSAGES_SCHEMA: "web-resource-schema"
+  json-converter:
+    image: json-converter-processing-service
+    incoming:
+      products:
+        topic: inboxes/products
+    outgoing:
+      web-resources:
+        topic: outboxes/web-resources
+  template:
+    image: template-processing-service
+    incoming:
+      products:
+        topic: inboxes/products
+    outgoing:
+      pages:
+        topic: outboxes/pages
+    volumesFrom:
+      configs:
+        - "templates:/deployments/templates"
+
+delivery:
+  graphql:
+    image: graphql-delivery-service
+    incoming:
+      products:
+        topic: outboxes/products
+    port: 8084
+  web:
+    image: web-delivery-service
+    incoming:
+      pages:
+        topic: outboxes/pages
+      web-resources:
+        topic: outboxes/web-resources
+    port: 8081
