@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.stream.Collectors;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @Dependent
@@ -52,7 +53,8 @@ public class TemplateConfig {
 
   private String getTemplateByPath(String templatePath) {
     try {
-      return Files.readString(Paths.get(templateDirectory, templatePath));
+      return Files.lines(Paths.get(templateDirectory, templatePath))
+          .collect(Collectors.joining("\n", "", "\n"));
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
