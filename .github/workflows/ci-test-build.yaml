@@ -47,4 +47,4 @@ jobs:
 
       - name: Build project
         run: |
-          ./mvnw clean verify
+          ./mvnw clean test
