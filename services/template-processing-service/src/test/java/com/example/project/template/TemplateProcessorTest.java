@@ -109,7 +109,7 @@ class TemplateProcessorTest {
     // then
     assertThat(messagesWithKey(resultKey).count()).isEqualTo(2);
     Message<Page> message = messagesWithKey(resultKey)
-        .max(Comparator.comparing(MetadataUtils::extractEventTime))
+        .max(Comparator.comparing(m -> m.getPayload().getContentAsString().length()))
         .get();
 
     assertKey(message, LISTING_PAGE);
